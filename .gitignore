@@ -4,6 +4,12 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+coturn
+coturn/*.conf
+
+database
+database/*.db
  
 # Runtime data
 pids
