@@ -10,6 +10,9 @@ coturn/*.conf
 
 database
 database/*.db
+
+dist
+dist/*
  
 # Runtime data
 pids
