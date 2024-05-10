@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug",
+            "program": "${workspaceFolder}/dist/main.js",
+            "skipFiles": [
+                "vscode//*.js", 
+                "${workspaceFolder}/node_modules//*.js"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug Typescript",
+            "runtimeArgs": ["-r", "ts-node/register"],
+            "args": ["${relativeFile}"],
+            "sourceMaps": true,
+            "cwd": "${workspaceFolder}",
+            "protocol": "inspector"
+        }
+    ]
+}
