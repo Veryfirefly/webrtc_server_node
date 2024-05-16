@@ -1,0 +1,6 @@
+{
+    "database.dir": "./database",
+    "listen.port": 3000,
+    "log.config": "./config/log4js.json",
+    "token.secret.key": ""
+}

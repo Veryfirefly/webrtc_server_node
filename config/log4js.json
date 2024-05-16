@@ -1,0 +1,27 @@
+{
+    "appenders": {
+      "moment": { 
+        "type": "file", 
+        "filename": "logs/moment.log",
+        "maxLogSize": 10485760,
+        "backups": 3,
+        "compress": true,
+        "keepFileExt": true
+      },
+      "express": {
+        "type": "file",
+        "filename": "logs/express-access.log",
+        "maxLogSize": 10485760,
+        "backups": 3,
+        "compress": true,
+        "keepFileExt": true
+      },
+      "console": {
+        "type": "console"
+      }
+    },
+    "categories": {
+      "default": { "appenders": ["moment", "console"], "level": "info" },
+      "express": { "appenders": ["express", "console"], "level": "info" }
+    }
+  }

@@ -14,6 +14,7 @@ let errorCb = function (rtc) {
 function SkyRTC() {
     this.sockets = [];
     this.rooms = {};
+
     // 加入房间
     this.on('__join', function (data, socket) {
 
@@ -139,7 +140,7 @@ SkyRTC.prototype.broadcast = function (data, errorCb) {
     }
 };
 
-
+// TODO unused
 SkyRTC.prototype.broadcastInRoom = function (room, data, errorCb) {
     var curRoom = this.rooms[room], i;
     if (curRoom) {
@@ -225,6 +226,7 @@ module.exports.listen = function (server) {
     SkyRTCServer.rtc = new SkyRTC();
     errorCb = errorCb(SkyRTCServer.rtc);
     SkyRTCServer.on('connection', function (socket) {
+        // TODO 添加filter过滤权限
         this.rtc.init(socket);
     });
 
