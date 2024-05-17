@@ -1,6 +1,7 @@
 {
-    "database.dir": "./database",
+    "database.file": "database",
+    "schema.file": "config/schema.sql",
     "listen.port": 3000,
-    "log.config": "./config/log4js.json",
-    "token.secret.key": ""
+    "log4js.file": "config/log4js.json",
+    "token.secret.key": "your_secret_key"
 }

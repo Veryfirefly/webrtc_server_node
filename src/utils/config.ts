@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from "fs";
 
 export declare interface Config {
     databaseDir: string,
+    schemaPath: string,
     listenPort: number,
     logConfig: string,
     tokenSecretKey: string
@@ -20,9 +21,10 @@ function readConfig(): Config {
     const serializeConfig = JSON.parse(strConfig)
 
     return {
-      databaseDir: notEmpty(serializeConfig, 'database.dir'),
+      databaseDir: notEmpty(serializeConfig, 'database.file'),
+      schemaPath: notEmpty(serializeConfig, 'schema.file'),
       listenPort: notEmpty(serializeConfig, 'listen.port'),
-      logConfig: notEmpty(serializeConfig, 'log.config'),
+      logConfig: notEmpty(serializeConfig, 'log4js.file'),
       tokenSecretKey: notEmpty(serializeConfig, 'token.secret.key')
     };
 }
