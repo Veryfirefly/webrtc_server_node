@@ -4,7 +4,7 @@ import { sign } from 'jsonwebtoken';
 
 import { config } from '../../utils/config';
 import { get } from '../../database/async-sqlite';
-import { cache, tokenKey, principalKey } from "../../utils/cache";
+import { cache, defaultExpireTime, tokenKey, principalKey } from '../../utils/cache';
 import { ApiStatus, ACCESS_TOKEN_KEY } from '../../utils/constant';
 
 export class ApiControllers {
@@ -14,23 +14,19 @@ export class ApiControllers {
         const phone: string = request.body['phone'].toString();
         const password: string = request.body['password'].toString();
 
-        const data: any = await get('select * from user where phone=?', phone);
+        const data: any = await get('select id, phone, password, avatar, name, create_time, modify_time from user where phone=?', phone);
         if (data) {
             const calculate: string = createHash('md5').update(password).digest('hex');
             const original: string = data['password'];
             if (original !== calculate) {
-                return response.json({
-                    status: ApiStatus.OK,
-                    message: '用户名或密码错误.',
-                    data: null
-                });
+                return response.json({ status: ApiStatus.OK, message: '用户名或密码错误.', data: null });
             }
 
-            const token: string = sign({ id: data['id'], phone: data['phone'] }, config.tokenSecretKey, { expiresIn: '1h' });
+            const token: string = sign({ id: data['id'], phone: data['phone'] }, config.tokenSecretKey, { expiresIn: '30d' });
 
             // set principal and token to cache.
-            cache.set(principalKey(data['phone']), data);
-            cache.set(tokenKey(data['phone']), token);
+            cache.set(principalKey(data['phone']), data, defaultExpireTime);
+            cache.set(tokenKey(data['phone']), token, defaultExpireTime);
 
             response.setHeader(ACCESS_TOKEN_KEY, token);
 
