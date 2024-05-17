@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { existsSync, mkdirSync } from 'fs';
+import { existsSync, mkdirSync, readFileSync } from 'fs';
 import { Database, Statement } from 'sqlite3';
 
 import { moment } from "../utils/log";
@@ -27,6 +27,19 @@ export function beforeInitDatabase(config: Config): void {
 
     dbHolder = new Database(join(dbDirPath, 'moment.db'));
     moment.info('The database has been initialized.');
+
+    const schemas: string = readFileSync(join(process.cwd(), config.schemaPath), 'utf-8');
+    dbHolder.serialize(() => {
+        dbHolder.run('BEGIN TRANSACTION;');
+        dbHolder.exec(schemas, (err: Error): void => {
+            if (err) {
+                throw new Error(`Error executing schema SQL: ${err.message}`);
+            }
+
+            moment.info('Table schema has been initialized.');
+        });
+        dbHolder.run('COMMIT;');
+    });
 }
 
 export async function get(sql: string, ...params: any[]): Promise<any> {
@@ -43,4 +56,8 @@ export async function all(sql: string, ...params: any[]): Promise<any> {
 
 export function prepare(sql: string, ...params: any[]): Statement {
     return dbHolder.prepare(sql, params);
+}
+
+export function run(sql: string, ...params: any[]): Database {
+    return dbHolder.run(sql, params);
 }
